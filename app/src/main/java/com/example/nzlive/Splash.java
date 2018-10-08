@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 
 import com.example.nzlive.login.login;
 import com.example.nzlive.util.ConstantValue;
 import com.example.nzlive.util.SharePreUtil;
 
+import java.io.IOException;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 /*
     闪屏页面
  */
@@ -17,11 +21,14 @@ import com.example.nzlive.util.SharePreUtil;
 public class Splash extends AppCompatActivity {
 
     private Boolean isFirst;
+    private String TAG="AAA";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+
         init();
 
         new Handler().postDelayed(new Runnable() {
@@ -38,6 +45,7 @@ public class Splash extends AppCompatActivity {
             }
         }, 1000);
     }
+
 
     private void init() {
         isFirst = SharePreUtil.getBoolean(getApplication(), ConstantValue.ISFIRST, true);
