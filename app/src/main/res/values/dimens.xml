@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="rm_6c_et_height" >40dp</dimen>
+    <dimen name="list_width" >304dp</dimen>
+    <dimen name="button_width">0dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+</resources>
