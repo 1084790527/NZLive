@@ -39,7 +39,8 @@ public class Splash extends AppCompatActivity {
                     SharePreUtil.saveBoolean(getApplication(), ConstantValue.ISFIRST, false);
                     //将isFirst改为false,并且在本地持久化
                 } else {
-                    startActivity(new Intent(Splash.this, MainActivity.class));
+                    startActivity(new Intent(Splash.this, login.class));
+//                    startActivity(new Intent(Splash.this, MainActivity.class));
                 }
                 finish();
             }
