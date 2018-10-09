@@ -2,21 +2,27 @@ package com.example.nzlive.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nzlive.MainActivity;
 import com.example.nzlive.R;
+import com.example.nzlive.util.AlertDialogUtil;
+import com.example.nzlive.util.LogUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -33,7 +39,8 @@ public class login extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "AAA";
     private EditText login_num,login_pwd;
     private Button login_btn,login_forget,login_register;
-
+    private TextView tv_msg;
+    private Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +52,14 @@ public class login extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void initData(){
+        handler=new Handler(Looper.getMainLooper());
+
         login_btn = findViewById(R.id.login_btn);
         login_num = findViewById(R.id.login_num);
         login_pwd = findViewById(R.id.login_pwd);
         login_forget = findViewById(R.id.login_forget);
         login_register = findViewById(R.id.login_register);
+        tv_msg=findViewById(R.id.tv_msg);
 
         login_btn.setOnClickListener(this);
         login_forget.setOnClickListener(this);
@@ -64,10 +74,12 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                 String num=login_num.getText().toString();
                 String pwd=login_pwd.getText().toString();
                 if ("".equals(num)){
-                    Toast.makeText(getApplicationContext(),"账号不允许为空",Toast.LENGTH_LONG).show();
+                    tv_msg.setText("账号不允许为空");
+//                    Toast.makeText(getApplicationContext(),"账号不允许为空",Toast.LENGTH_LONG).show();
                     return;
                 }else if ("".equals(pwd)){
-                    Toast.makeText(getApplicationContext(),"密码不允许为空",Toast.LENGTH_LONG).show();
+                    tv_msg.setText("密码不允许为空");
+//                    Toast.makeText(getApplicationContext(),"密码不允许为空",Toast.LENGTH_LONG).show();
                     return;
                 }
                 OkHttpClient okHttpClient  = new OkHttpClient.Builder()
@@ -101,7 +113,8 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                     //请求错误回调方法
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Toast.makeText(getApplicationContext(),"服务器错误！",Toast.LENGTH_LONG).show();
+                        tv_msg.setText("服务器错误！");
+//                        Toast.makeText(getApplicationContext(),"服务器错误！",Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
@@ -117,13 +130,31 @@ public class login extends AppCompatActivity implements View.OnClickListener{
 //                        Log.d(TAG, ""+status);
                         switch (status){
                             case "0":
-                                Toast.makeText(getApplicationContext(),"账号不存在！",Toast.LENGTH_LONG).show();
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        tv_msg.setText("账号不存在！");
+//                                        LogUtil.Logd(getApplicationContext(),"账号不存在！");
+                                    }
+                                });
                                 break;
                             case "1":
-                                Toast.makeText(getApplicationContext(),"密码错误！",Toast.LENGTH_LONG).show();
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        tv_msg.setText("密码错误！");
+//                                        Toast.makeText(getApplicationContext(),"密码错误！",Toast.LENGTH_LONG).show();
+                                    }
+                                });
                                 break;
                             case "2":
-                                Toast.makeText(getApplicationContext(),"登入成功",Toast.LENGTH_LONG).show();
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        tv_msg.setText("登入成功");
+//                                        Toast.makeText(getApplicationContext(),"登入成功",Toast.LENGTH_LONG).show();
+                                    }
+                                });
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
                                 break;
