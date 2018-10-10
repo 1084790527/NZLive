@@ -61,7 +61,7 @@ public class PersonageFragment extends Fragment implements View.OnClickListener 
 
             String userid=user.getString("userid");
             if (userid.length()==6){
-                LogUtil.Logd(getActivity(),user.toString()+"");
+//                LogUtil.Logd(getActivity(),user.toString()+"");
                 tv_userid.setText(userid);
                 tv_username.setText(user.getString("username")+"");
                 tv_system.setText(Util.system(user.getString("system")));

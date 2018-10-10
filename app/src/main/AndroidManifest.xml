@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nzlive">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -22,18 +22,20 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".login.login" />
         <activity android:name=".login.register" />
-        <activity android:name=".login.entry_pwd"/>
-        <activity android:name=".fragment.homePage.KnowingActivity"/>
+        <activity android:name=".login.entry_pwd" />
+        <activity android:name=".fragment.homePage.KnowingActivity" />
+
         <provider
-            android:authorities="com.example.nzlive.fragment.homePage.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.nzlive.fragment.homePage.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true"
-            >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".fragment.homePage.TeacherActivity"></activity>
     </application>
 
 </manifest>

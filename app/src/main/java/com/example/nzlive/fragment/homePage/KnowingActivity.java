@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class KnowingActivity extends Activity {
+public class KnowingActivity extends Activity implements View.OnClickListener {
 
     private View ll_return,rl_addPhotograph;
     private ImageView iv_pictur;
@@ -34,14 +34,47 @@ public class KnowingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_knowing);
         init();
-        returnOnClick();
-        addPhotographOnClick();
+
     }
 
-    private void addPhotographOnClick() {
-        rl_addPhotograph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case 1:
+                if (resultCode==RESULT_OK){
+                    try {
+                        bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        bitmap= ImageUtil.drawTextToLeftTop(getApplicationContext(),bitmap,
+                                new NetTimeUtil().getNetTime(getApplicationContext())+"sj,rq,xm,xh,bj",
+                                100, Color.RED,0,0);
+                        iv_pictur.setImageBitmap(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void init() {
+        ll_return=findViewById(R.id.ll_return);
+        ll_return.setOnClickListener(this);
+        rl_addPhotograph=findViewById(R.id.rl_addPhotograph);
+        rl_addPhotograph.setOnClickListener(this);
+        iv_pictur=findViewById(R.id.iv_pictur);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_return:
+                finish();
+                break;
+            case R.id.rl_addPhotograph:
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -65,44 +98,7 @@ public class KnowingActivity extends Activity {
                 Intent intent=new Intent("android.media.action.IMAGE_CAPTURE");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
                 startActivityForResult(intent,1);
-
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case 1:
-                if (resultCode==RESULT_OK){
-                    try {
-                        bitmap= BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                        bitmap= ImageUtil.drawTextToLeftTop(getApplicationContext(),bitmap,
-                                new NetTimeUtil().getNetTime(getApplicationContext())+"sj,rq,xm,xh,bj",
-                                100, Color.RED,0,0);
-                        iv_pictur.setImageBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            default:
                 break;
         }
-    }
-
-    private void returnOnClick() {
-        ll_return.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
-    private void init() {
-        ll_return=findViewById(R.id.ll_return);
-        rl_addPhotograph=findViewById(R.id.rl_addPhotograph);
-        iv_pictur=findViewById(R.id.iv_pictur);
     }
 }

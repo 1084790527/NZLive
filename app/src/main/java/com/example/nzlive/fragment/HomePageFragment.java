@@ -23,7 +23,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.nzlive.R;
 import com.example.nzlive.fragment.homePage.KnowingActivity;
+import com.example.nzlive.fragment.homePage.TeacherActivity;
 import com.example.nzlive.util.GETHttp;
+import com.example.nzlive.util.LogUtil;
+import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.viewPager.FiveFragment;
 import com.example.nzlive.viewPager.FourFragment;
 import com.example.nzlive.viewPager.OneFragment;
@@ -141,8 +144,26 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_knowing:
-                Intent intent=new Intent(getActivity(), KnowingActivity.class);
-                startActivity(intent);
+                String data=SharePreUtil.getData(getActivity(),"user","data","");
+                boolean b=true;
+                try {
+                    JSONObject jsonObject=new JSONObject(data);
+                    String userid=jsonObject.getString("userid")+"";
+                    if (userid.length()==6){
+                        b=false;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (b){
+                    Intent intent=new Intent(getActivity(), KnowingActivity.class);
+                    startActivity(intent);
+                }else {
+//                    LogUtil.Logd(getActivity(),"ls");
+                    Intent intent=new Intent(getActivity(), TeacherActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
         }
     }
