@@ -36,11 +36,11 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 if (isFirst){
                     startActivity(new Intent(Splash.this, login.class));
-                    SharePreUtil.saveBoolean(getApplication(), ConstantValue.ISFIRST, false);
+//                    SharePreUtil.saveBoolean(getApplication(), ConstantValue.ISFIRST, false);
                     //将isFirst改为false,并且在本地持久化
                 } else {
-                    startActivity(new Intent(Splash.this, login.class));
-//                    startActivity(new Intent(Splash.this, MainActivity.class));
+//                    startActivity(new Intent(Splash.this, login.class));
+                    startActivity(new Intent(Splash.this, MainActivity.class));
                 }
                 finish();
             }
@@ -49,6 +49,11 @@ public class Splash extends AppCompatActivity {
 
 
     private void init() {
-        isFirst = SharePreUtil.getBoolean(getApplication(), ConstantValue.ISFIRST, true);
+        try {
+            isFirst = SharePreUtil.getBoolean(getApplication(), ConstantValue.ISFIRST, true);
+        }catch (Exception e){
+            isFirst=true;
+        }
+
     }
 }

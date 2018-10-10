@@ -15,9 +15,11 @@ import android.widget.Toast;
 import com.example.nzlive.MainActivity;
 import com.example.nzlive.R;
 import com.example.nzlive.util.AlertDialogUtil;
+import com.example.nzlive.util.ConstantValue;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.util.Util;
+import com.example.nzlive.util.Variable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -133,13 +135,13 @@ public class login extends AppCompatActivity implements View.OnClickListener{
         String json = jsonObject.toString();
         SharePreUtil.saveData(getApplicationContext(),"user","data",json);
 
-        LogUtil.Logd(getApplicationContext(),SharePreUtil.getData(getApplicationContext(),"user","data","")+"");
+//        LogUtil.Logd(getApplicationContext(),SharePreUtil.getData(getApplicationContext(),"user","data","")+"");
         //MediaType  设置Content-Type 标头中包含的媒体类型值
         RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
                 , json);
 
         final Request request = new Request.Builder()
-                .url("http://192.168.0.177:8888/login")//请求的url
+                .url(Variable.ServiceIP+"login")//请求的url
                 .post(requestBody)
                 .build();
 
@@ -150,7 +152,13 @@ public class login extends AppCompatActivity implements View.OnClickListener{
             //请求错误回调方法
             @Override
             public void onFailure(Call call, IOException e) {
-                tv_msg.setText("服务器错误！");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv_msg.setText("服务器错误！");
+                    }
+                });
+
 //                        Toast.makeText(getApplicationContext(),"服务器错误！",Toast.LENGTH_LONG).show();
             }
             @Override
@@ -170,7 +178,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                tv_msg.setText("账号不存在！");
+//                                tv_msg.setText("账号不存在！");
 //                                        LogUtil.Logd(getApplicationContext(),"账号不存在！");
                             }
                         });
@@ -185,6 +193,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                         });
                         break;
                     case "2":
+                        SharePreUtil.saveBoolean(getApplication(), ConstantValue.ISFIRST, false);
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
