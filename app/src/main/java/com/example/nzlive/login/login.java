@@ -61,7 +61,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
             String s = SharePreUtil.getData(getApplicationContext(),"user","data","");
             JSONObject jsonObject=new JSONObject(s);
 //            LogUtil.Logd(getApplicationContext(),jsonObject.toString()+"");
-            login_num.setText(jsonObject.getString("username")+"");
+            login_num.setText(jsonObject.getString("userid")+"");
             login_pwd.setText(jsonObject.getString("userpwd")+"");
         }catch (Exception e){
 
@@ -125,7 +125,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
 
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("username",num);
+            jsonObject.put("userid",num);
             jsonObject.put("userpwd",pwd);
         } catch (JSONException e) {
             e.printStackTrace();
