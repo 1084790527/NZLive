@@ -45,4 +45,53 @@ public class Util {
 //        String urlSetting = "http://" + urlHttp+ ":" + urlPort + "/";
         return netTimeUtil;
     }
+
+    /**
+     *
+     * @param userid
+     * @return
+     */
+    public static JSONObject getSystemAdnClass(String userid){
+        String year=userid.substring(2,4);
+        String system=userid.substring(4,6);
+        String clas=userid.substring(6,8);
+
+        system=system(system);
+        clas=clas(clas);
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("system",system);
+            jsonObject.put("class",year+clas);
+            return jsonObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static String system(String system){
+        switch (system){
+            case "01":
+                return "信息技术与工程系";
+            case "02":
+                return "信息技术与工程系";
+            case "03":
+                return "信息技术与工程系";
+            case "04":
+                return "信息技术与工程系";
+            case "05":
+                return "信息技术与工程系";
+
+        }
+        return "-----------系";
+    }
+    private static String clas(String clas){
+        switch (clas){
+            case "11":
+                return "应用";
+        }
+        return "";
+    }
 }

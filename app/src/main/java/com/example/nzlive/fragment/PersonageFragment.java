@@ -14,7 +14,9 @@ import com.example.nzlive.R;
 import com.example.nzlive.Splash;
 import com.example.nzlive.login.login;
 import com.example.nzlive.util.ConstantValue;
+import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.SharePreUtil;
+import com.example.nzlive.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +46,8 @@ public class PersonageFragment extends Fragment implements View.OnClickListener 
 
         setTV();
 
+//        LogUtil.Logd(getContext(),Util.getSystemAdnClass("2016041113"));
+
         return view;
     }
 
@@ -52,9 +56,12 @@ public class PersonageFragment extends Fragment implements View.OnClickListener 
         JSONObject user=null;
         try {
             user=new JSONObject(s);
+
+            JSONObject jsonObject=Util.getSystemAdnClass(user.getString("userid"));
+
             tv_userid.setText(user.getString("userid")+"");
-            tv_system.setText("计算机系");
-            tv_class.setText("16应用");
+            tv_system.setText(jsonObject.getString("system"));
+            tv_class.setText(jsonObject.getString("class"));
             tv_username.setText(user.getString("username")+"");
             tv_dormroom.setText(user.getString("dormroom")+"");
             tv_counselorid.setText("辅导员");
