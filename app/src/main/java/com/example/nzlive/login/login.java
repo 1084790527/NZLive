@@ -66,7 +66,6 @@ public class login extends AppCompatActivity implements View.OnClickListener{
         }catch (Exception e){
 
         }
-
     }
 
     private void initData(){
@@ -178,7 +177,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-//                                tv_msg.setText("账号不存在！");
+                                tv_msg.setText("账号不存在！");
 //                                        LogUtil.Logd(getApplicationContext(),"账号不存在！");
                             }
                         });
