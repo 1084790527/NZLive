@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomePageFragment extends Fragment {
+public class HomePageFragment extends Fragment implements View.OnClickListener {
 
     private View view;
     private ViewPager home_viewPager;
@@ -95,7 +95,6 @@ public class HomePageFragment extends Fragment {
 
         });
 
-        knowing();
         weather(new GETHttp().getResponse(getContext()));
 //        weather();
         return view;
@@ -138,15 +137,16 @@ public class HomePageFragment extends Fragment {
         }
     }
 
-    private void knowing() {
-        ll_knowing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_knowing:
                 Intent intent=new Intent(getActivity(), KnowingActivity.class);
                 startActivity(intent);
-            }
-        });
+                break;
+        }
     }
+
 
     class TimerRunnable implements Runnable{
 
@@ -173,6 +173,7 @@ public class HomePageFragment extends Fragment {
         fragmentContainter.add(f4);
         fragmentContainter.add(f5);
         ll_knowing=view.findViewById(R.id.ll_knowing);
+        ll_knowing.setOnClickListener(this);
         new GETHttp().setResponse(strUrl,getContext());
         tv_week=view.findViewById(R.id.tv_week);
         tv_years=view.findViewById(R.id.tv_years);

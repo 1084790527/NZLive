@@ -57,14 +57,26 @@ public class PersonageFragment extends Fragment implements View.OnClickListener 
         try {
             user=new JSONObject(s);
 
-            JSONObject jsonObject=Util.getSystemAdnClass(user.getString("userid"));
 
-            tv_userid.setText(user.getString("userid")+"");
-            tv_system.setText(jsonObject.getString("system"));
-            tv_class.setText(jsonObject.getString("class"));
-            tv_username.setText(user.getString("username")+"");
-            tv_dormroom.setText(user.getString("dormroom")+"");
-            tv_counselorid.setText("辅导员");
+
+            String userid=user.getString("userid");
+            if (userid.length()==6){
+                LogUtil.Logd(getActivity(),user.toString()+"");
+                tv_userid.setText(userid);
+                tv_username.setText(user.getString("username")+"");
+                tv_system.setText(Util.system(user.getString("system")));
+
+            }else {
+                JSONObject jsonObject=Util.getSystemAdnClass(userid);
+                tv_userid.setText(userid);
+                tv_system.setText(jsonObject.getString("system"));
+                tv_class.setText(jsonObject.getString("class"));
+                tv_username.setText(user.getString("username")+"");
+                tv_dormroom.setText(user.getString("dormroom")+"");
+                tv_counselorid.setText("辅导员");
+            }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
             tv_userid.setText("服务器数据错误！");

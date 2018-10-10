@@ -71,7 +71,7 @@ public class Util {
         return null;
     }
 
-    private static String system(String system){
+    public static String system(String system){
         switch (system){
             case "01":
                 return "信息技术与工程系";
