@@ -106,7 +106,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
      * 用户登入
      */
     private void userLogin() {
-        String num=login_num.getText().toString();
+        final String num=login_num.getText().toString();
         String pwd=login_pwd.getText().toString();
         if ("".equals(num)){
             tv_msg.setText("账号不允许为空");
@@ -163,8 +163,9 @@ public class login extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String status="0";
+                JSONObject object=null;
                 try {
-                    JSONObject object=new JSONObject(response.body().string());
+                    object=new JSONObject(response.body().string());
 //                            Log.d(TAG, ""+object.toString());
                     status=object.getString("status");
                 } catch (JSONException e) {
@@ -192,6 +193,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                         });
                         break;
                     case "2":
+                        SharePreUtil.saveData(getApplicationContext(),"user","data",object.toString()+"");
                         SharePreUtil.saveBoolean(getApplication(), ConstantValue.ISFIRST, false);
                         handler.post(new Runnable() {
                             @Override
