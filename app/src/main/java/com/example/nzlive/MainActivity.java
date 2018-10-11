@@ -89,5 +89,11 @@ public class MainActivity extends AppCompatActivity {
         rb_personage=findViewById(R.id.rb_personage);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (SocketConnet.booleanconnet()){
+            SocketConnet.closeWebSocketConnection();
+        }
+    }
 }
