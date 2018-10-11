@@ -14,6 +14,11 @@ import com.example.nzlive.fragment.FriendFragment;
 import com.example.nzlive.fragment.HomePageFragment;
 import com.example.nzlive.fragment.InforMationFragment;
 import com.example.nzlive.fragment.PersonageFragment;
+import com.example.nzlive.util.LogUtil;
+import com.example.nzlive.websocket.SocketConnet;
+
+import de.tavendo.autobahn.WebSocketConnection;
+import de.tavendo.autobahn.WebSocketException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +38,20 @@ public class MainActivity extends AppCompatActivity {
 
         rbListener();
 
+        webSocketConnet();
+    }
+
+    private void webSocketConnet() {
+        if (SocketConnet.booleanconnet()){
+            LogUtil.Logd(getApplicationContext(),"已连接");
+            return;
+        }
+        try {
+            SocketConnet.connet(getApplication());
+        } catch (WebSocketException e) {
+            e.printStackTrace();
+            LogUtil.Logd(getApplicationContext(),"连接失败");
+        }
     }
 
     private void rbListener() {
