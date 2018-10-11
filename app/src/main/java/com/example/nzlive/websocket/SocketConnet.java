@@ -57,6 +57,15 @@ public class SocketConnet {
 
     }
 
+    public static boolean sendTextMessage(String message){
+        if (booleanconnet()){
+            sendTextMessage(message);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     public SocketConnet(){
 
     }
