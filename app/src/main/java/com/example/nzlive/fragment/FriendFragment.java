@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.nzlive.R;
+import com.example.nzlive.util.LogUtil;
+import com.example.nzlive.websocket.SocketConnet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import de.tavendo.autobahn.WebSocketException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -33,6 +36,7 @@ public class FriendFragment extends Fragment {
 
 
     private static final String TAG = "AAA";
+//    private SocketConnet connet;
 
     public FriendFragment() {
         // Required empty public constructor
@@ -51,7 +55,21 @@ public class FriendFragment extends Fragment {
 //        okHttp_postFromParameters();
 //        okHttp_postFromJson();
 
+//        connet=new SocketConnet();
+//        try {
+//            connet.connet(getActivity());
+//        } catch (WebSocketException e) {
+//            e.printStackTrace();
+//            LogUtil.Logd(getContext(),"连接错误");
+//        }
+
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        connet.webSocketConnection.disconnect();
     }
 
     /**

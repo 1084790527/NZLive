@@ -17,6 +17,7 @@ import com.example.nzlive.util.ConstantValue;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.util.Util;
+import com.example.nzlive.websocket.SocketConnet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,14 +99,16 @@ public class PersonageFragment extends Fragment implements View.OnClickListener 
         tv_username=view.findViewById(R.id.tv_username);
         tv_dormroom=view.findViewById(R.id.tv_dormroom);
         tv_counselorid=view.findViewById(R.id.tv_counselorid);
-
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_logout:
+                LogUtil.Logd(getActivity(),SocketConnet.booleanconnet()+"");
+                if (SocketConnet.booleanconnet()){
+                    SocketConnet.closeWebSocketConnection();
+                }
                 SharePreUtil.saveBoolean(getActivity(), ConstantValue.ISFIRST, true);
                 startActivity(new Intent(getActivity(), login.class));
                 getActivity().finish();

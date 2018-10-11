@@ -32,6 +32,7 @@ import com.example.nzlive.viewPager.FourFragment;
 import com.example.nzlive.viewPager.OneFragment;
 import com.example.nzlive.viewPager.ThreeFragment;
 import com.example.nzlive.viewPager.TwoFragment;
+import com.example.nzlive.websocket.SocketConnet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import de.tavendo.autobahn.WebSocketException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,6 +105,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 //        weather();
         return view;
     }
+
 
     private void weather() {
         RequestQueue mQueue = Volley.newRequestQueue(getActivity());
