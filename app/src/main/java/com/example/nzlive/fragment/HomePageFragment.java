@@ -101,7 +101,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 
         });
 
-        weather(new GETHttp().getResponse(getContext()));
+//        weather(new GETHttp().getResponse(getContext()));
 //        weather();
         return view;
     }

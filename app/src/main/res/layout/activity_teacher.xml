@@ -72,10 +72,13 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView
-                android:text="名单"
+
+            <ListView
+                android:id="@+id/lv_teacher_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+            </ListView>
         </LinearLayout>
         <TextView
             android:layout_width="25dp"
@@ -91,6 +94,7 @@
             android:layout_width="25dp"
             android:layout_height="wrap_content" />
         <LinearLayout
+            android:id="@+id/ll_startPointName"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:background="#f57051"
@@ -99,7 +103,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="点名"
+                android:text="开始点名"
                 android:textSize="20sp"/>
         </LinearLayout>
 
