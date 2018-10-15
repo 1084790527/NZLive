@@ -62,7 +62,7 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
         bean.setUserid("学号");
         bean.setUsername("姓名");
         bean.setDormroom("宿舍");
-        bean.setStatus("是否已到");
+        bean.setStatus("到时");
         mList.add(bean);
         final TeacherListAdapter adapter=new TeacherListAdapter(mList,getApplicationContext());
         lv_teacher_list.setAdapter(adapter);
