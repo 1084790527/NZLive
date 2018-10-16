@@ -36,6 +36,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -129,6 +131,7 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
                 startActivityForResult(intent,1);
                 break;
             case R.id.ll_upload_image:
+                //拍照
                 try {
                     Drawable.ConstantState pictur=iv_pictur.getDrawable().getCurrent().getConstantState();
                     if (pictur==null){
@@ -146,38 +149,7 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
                 final Bitmap bitmap=Bitmap.createBitmap(iv_pictur.getDrawingCache());
                 iv_pictur.setDrawingCacheEnabled(false);
 
-//                if (bitmap==null) LogUtil.Logd(getApplicationContext(),"null");
-
-                ByteArrayOutputStream stream=new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
-
-                String sdcard = Environment.getExternalStorageDirectory().toString();
-                LogUtil.Logd(getApplicationContext(),sdcard+"");
-                File file=new File(sdcard+"/111");
-                File imageFile;
-                try {
-                    if (!file.exists()) {
-                        file.mkdirs();
-                    }
-                    imageFile = new File(file.getAbsolutePath(), "命名" + ".jpg");
-                    FileOutputStream outStream = null;
-                    outStream = new FileOutputStream(imageFile);
-                    Bitmap image = bitmap;
-                    image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-                    outStream.flush();
-                    outStream.close();
-//                    result = mActivity.getResources().getString(R.string.save_picture_success, file.getAbsolutePath());
-                    LogUtil.Logd(getApplicationContext(),"保存完成");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    LogUtil.Logd(getApplicationContext(),"保存失败");
-                }
-
-
-//                final byte[] bytes=stream.toByteArray();
-                final byte[] bytes=File2byte(sdcard+"/111/命名.jpg");
-                LogUtil.Logd(getApplicationContext(),bytes.toString()+"");
-
+                //保存到本地
                 String userid=SharePreUtil.getData(getApplicationContext(),"user","data","");
                 try {
                     JSONObject object=new JSONObject(userid);
@@ -190,13 +162,41 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
                     return;
                 }
 
+                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+                Date date=new Date(System.currentTimeMillis());
+                LogUtil.Logd(getApplicationContext(),simpleDateFormat.format(date)+"");
+                //时间  +  学号
+                String fileName=simpleDateFormat.format(date)+userid+".jpg";
+                String sdcard = Environment.getExternalStorageDirectory().toString()+"/nzlive/";
+                LogUtil.Logd(getApplicationContext(),sdcard+"");
+                File file=new File(sdcard);
+                File imageFile;
+                try {
+                    if (!file.exists()) {
+                        file.mkdirs();
+                    }
+                    imageFile = new File(file.getAbsolutePath(), fileName);
+                    FileOutputStream outStream = null;
+                    outStream = new FileOutputStream(imageFile);
+                    Bitmap image = bitmap;
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                    outStream.flush();
+                    outStream.close();
+                    LogUtil.Logd(getApplicationContext(),"保存完成");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtil.Logd(getApplicationContext(),"保存失败");
+                }
+
+
+                //上传图片
                 OkHttpClient okHttpClient  = new OkHttpClient.Builder()
                         .connectTimeout(10, TimeUnit.SECONDS)
                         .writeTimeout(10,TimeUnit.SECONDS)
                         .readTimeout(20, TimeUnit.SECONDS)
                         .build();
                 MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
-                File f=new File(sdcard+"/111/命名.jpg");
+                File f=new File(sdcard+fileName);
                 if (f!=null){
                     RequestBody body=RequestBody.create(MediaType.parse("image/*"),f);
                     builder.addFormDataPart("imagebyte",f.getName(),body);
@@ -221,36 +221,5 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
                 break;
         }
     }
-
-    public static byte[] File2byte(String filePath)
-    {
-        byte[] buffer = null;
-        try
-        {
-            File file = new File(filePath);
-            FileInputStream fis = new FileInputStream(file);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            byte[] b = new byte[1024];
-            int n;
-            while ((n = fis.read(b)) != -1)
-            {
-                bos.write(b, 0, n);
-//                Log.d(TAG, "File2byte: "+b.length);
-            }
-            fis.close();
-            bos.close();
-            buffer = bos.toByteArray();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return buffer;
-    }
-
 
 }
