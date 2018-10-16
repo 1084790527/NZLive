@@ -2,7 +2,9 @@ package com.example.nzlive.websocket;
 
 import android.content.Context;
 
+import com.example.nzlive.MainActivity;
 import com.example.nzlive.util.LogUtil;
+import com.example.nzlive.util.NotificationManagerUtil;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.util.Variable;
 
@@ -51,6 +53,30 @@ public class SocketConnet {
             @Override
             public void onTextMessage(String payload) {
                 LogUtil.Logd(context,payload+"");
+                JSONObject object=null;
+                try {
+                    object=new JSONObject(payload);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (object==null){
+                    LogUtil.Logd(context,"数据获取错误！");
+                    return;
+                }
+                String type="";
+                try {
+                    type=object.getString("type");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                switch (type){
+                    case "":
+                        LogUtil.Logd(context,"数据获取错误！");
+                        break;
+                    case "checkTheBed":
+                        NotificationManagerUtil.NMUtil(context,"点名哪！！！","点名开始，请尽快完成任务！");
+                        break;
+                }
             }
 
         });
@@ -59,7 +85,7 @@ public class SocketConnet {
 
     public static boolean sendTextMessage(String message){
         if (booleanconnet()){
-            sendTextMessage(message);
+            webSocketConnection.sendTextMessage(message);
             return true;
         }else {
             return false;
@@ -77,7 +103,7 @@ public class SocketConnet {
         if (webSocketConnection==null){
             return false;
         }else {
-            return webSocketConnection.isConnected();
+            return true;
         }
 
     }

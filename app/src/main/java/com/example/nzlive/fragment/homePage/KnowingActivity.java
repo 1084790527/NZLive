@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
@@ -58,6 +59,7 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
     private Uri imageUri;
     private Bitmap bitmap;
     private LinearLayout ll_upload_image;
+    private Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +99,7 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
         iv_pictur=findViewById(R.id.iv_pictur);
         ll_upload_image=findViewById(R.id.ll_upload_image);
         ll_upload_image.setOnClickListener(this);
+        handler=new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -185,7 +188,8 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
                     LogUtil.Logd(getApplicationContext(),"保存完成");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    LogUtil.Logd(getApplicationContext(),"保存失败");
+                    LogUtil.Logd(getApplicationContext(),"保存失败,请重新登入后，尝试！");
+                    return;
                 }
 
 
@@ -196,27 +200,58 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
                         .readTimeout(20, TimeUnit.SECONDS)
                         .build();
                 MultipartBody.Builder builder=new MultipartBody.Builder().setType(MultipartBody.FORM);
-                File f=new File(sdcard+fileName);
-                if (f!=null){
-                    RequestBody body=RequestBody.create(MediaType.parse("image/*"),f);
-                    builder.addFormDataPart("imagebyte",f.getName(),body);
+//                File f=new File(sdcard+fileName);
+//                File f=imageFile;
+                if (imageFile!=null){
+                    RequestBody body=RequestBody.create(MediaType.parse("image/*"),imageFile);
+                    builder.addFormDataPart("imagebyte",imageFile.getName(),body);
                 }
                 builder.addFormDataPart("userid",userid);
                 final Request request=new Request.Builder().url(Variable.ServiceIP+"setNameRecord").post(builder.build()).tag(getApplication()).build();
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d(TAG, "onFailure: "+"获取失败"+e);
+//                        Log.d(TAG, "onFailure: "+"获取失败"+e);
                         e.printStackTrace();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                LogUtil.Logd(getApplicationContext(),"上传失败，请检查网络是否连接！");
+                            }
+                        });
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String s=response.body().string();
                         Log.d(TAG, "onResponse: "+s);
+                        String status="";
+                        try {
+                            JSONObject object=new JSONObject(s);
+                            status=object.getString("status");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        switch (status){
+                            case "":
+                                break;
+                            case "0":
+                                finish();
+                                break;
+                            case "1":
+                            case "2":
+                            case "3":
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        LogUtil.Logd(getApplicationContext(),"上传失败，请重新上传！");
+                                    }
+                                });
+                                break;
+
+                        }
                     }
                 });
-
 
                 break;
         }

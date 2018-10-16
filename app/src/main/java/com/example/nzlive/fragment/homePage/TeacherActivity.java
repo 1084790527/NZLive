@@ -17,6 +17,7 @@ import com.example.nzlive.fragment.homePage.adapter.TeacherListAdapter;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.util.Variable;
+import com.example.nzlive.websocket.SocketConnet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,8 +125,6 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
                                 adapter.notifyDataSetChanged();
                             }
                         });
-
-
                     }
 
                 } catch (JSONException e) {
@@ -154,7 +153,17 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.ll_startPointName:
-
+                if (SocketConnet.booleanconnet()){
+                    JSONObject object=new JSONObject();
+                    try {
+                        object.put("type","checkTheBed");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    boolean b = SocketConnet.sendTextMessage(object.toString()+"");
+                }else {
+                    LogUtil.Logd(getApplicationContext(),"连接服务器失败请重启app！");
+                }
                 break;
         }
     }
