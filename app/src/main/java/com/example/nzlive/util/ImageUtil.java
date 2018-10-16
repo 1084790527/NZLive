@@ -111,8 +111,7 @@ public class ImageUtil {
      * @param text
      * @return
      */
-    public static Bitmap drawTextToLeftTop(Context context, Bitmap bitmap, String text,
-                                           int size, int color, int paddingLeft, int paddingTop) {
+    public static Bitmap drawTextToLeftTop(Context context, Bitmap bitmap, String text, int size, int color, int paddingLeft, int paddingTop) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(color);
         paint.setTextSize(dp2px(context, size));

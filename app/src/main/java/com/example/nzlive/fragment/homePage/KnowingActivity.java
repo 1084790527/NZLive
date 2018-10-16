@@ -65,7 +65,6 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_knowing);
         init();
-
     }
 
 
