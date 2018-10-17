@@ -1,5 +1,6 @@
 package com.example.nzlive.fragment.homePage;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -32,7 +33,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -48,12 +51,13 @@ import okhttp3.Response;
 public class TeacherActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "AAA";
-    private LinearLayout ll_return,ll_startPointName;
+    private LinearLayout ll_return,ll_startPointName,ll_teacherRecording;
     private ListView lv_teacher_list;
     private Handler handler;
     private static List<TeacherListBean> mList;
     private static TeacherListAdapter adapter;
     private ImageView iv_checkTheBed;
+    private String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +165,18 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
 
         iv_checkTheBed=findViewById(R.id.iv_checkTheBed);
         iv_checkTheBed.setOnClickListener(this);
+
+        ll_teacherRecording=findViewById(R.id.ll_teacherRecording);
+        ll_teacherRecording.setOnClickListener(this);
+
+        String s=SharePreUtil.getData(getApplicationContext(),"user","data","");
+        try {
+            JSONObject object=new JSONObject(s);
+            userid=object.getString("userid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            userid=null;
+        }
     }
 
     @Override
@@ -178,6 +194,79 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
                         e.printStackTrace();
                     }
                     boolean b = SocketConnet.sendTextMessage(object.toString()+"");
+                    if (!b){
+                        LogUtil.Logd(getApplicationContext(),"连接服务器失败请重启app！");
+                        return;
+                    }
+
+                    OkHttpClient okHttpClient  = new OkHttpClient.Builder()
+                            .connectTimeout(10, TimeUnit.SECONDS)
+                            .writeTimeout(10,TimeUnit.SECONDS)
+                            .readTimeout(20, TimeUnit.SECONDS)
+                            .build();
+                    if (userid==null){
+                        LogUtil.Logd(getApplicationContext(),"请重新登入！");
+                        return;
+                    }
+
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
+                    final Date date=new Date(System.currentTimeMillis());
+                    String year=simpleDateFormat.format(date);
+                    simpleDateFormat=new SimpleDateFormat("HH:mm:ss");
+                    String time=simpleDateFormat.format(date);
+                    JSONObject jsonObject=new JSONObject();
+                    try {
+                        jsonObject.put("userid",userid);
+                        jsonObject.put("date",year);
+                        jsonObject.put("time",time);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    String json = jsonObject.toString();
+
+                    //MediaType  设置Content-Type 标头中包含的媒体类型值
+                    RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+
+                    final Request request = new Request.Builder()
+                            .url(Variable.ServiceIP+"setInitiateNameRecord")//请求的url
+                            .post(requestBody)
+                            .build();
+
+                    //创建/Call
+                    Call call = okHttpClient.newCall(request);
+                    //加入队列 异步操作
+                    call.enqueue(new Callback() {
+                        //请求错误回调方法
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            System.out.println("连接失败");
+                        }
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            String s=response.body().string();
+                            Log.d(TAG, ""+s);
+                            boolean t=true;
+                            try {
+                                JSONObject mObject=new JSONObject(s);
+                                String status=mObject.getString("status");
+                                if ("1".equals(status)){
+                                    t=false;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                t=false;
+                            }
+                            if (!t){
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        LogUtil.Logd(getApplicationContext(),"点名错误，请重新登入重新尝试！");
+                                    }
+                                });
+                            }
+                        }
+                    });
+
                 }else {
                     LogUtil.Logd(getApplicationContext(),"连接服务器失败请重启app！");
                 }
@@ -185,6 +274,10 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.iv_checkTheBed:
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,0);
                 iv_checkTheBed.setLayoutParams(params);
+                break;
+            case R.id.ll_teacherRecording:
+                Intent intent=new Intent(getApplicationContext(),TeacherRecordingActivity.class);
+                startActivity(intent);
                 break;
         }
     }

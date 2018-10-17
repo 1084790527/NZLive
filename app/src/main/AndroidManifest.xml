@@ -40,7 +40,8 @@
         </provider>
 
         <activity android:name=".fragment.homePage.TeacherActivity" />
-        <activity android:name=".fragment.homePage.KnowingRecordingActivity"></activity>
+        <activity android:name=".fragment.homePage.KnowingRecordingActivity" />
+        <activity android:name=".fragment.homePage.TeacherRecordingActivity"></activity>
     </application>
 
 </manifest>
