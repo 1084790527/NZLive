@@ -125,7 +125,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 //            }
 //        });
 //        mQueue.add(jsonObjectRequest);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//yyyy年MM月dd日 HH:mm:ss
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");//yyyy年MM月dd日 HH:mm:ss
         //获取当前时间
         Date date = new Date(System.currentTimeMillis());
         tv_years.setText(simpleDateFormat.format(date)+"");
@@ -133,7 +133,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 
         simpleDateFormat=new SimpleDateFormat("E");
         String week="星期"+(simpleDateFormat.format(date)).substring(1,2);
-        LogUtil.Logd(getActivity(),week);
+//        LogUtil.Logd(getActivity(),week);
         tv_week.setText(week);
 
         try {
@@ -151,14 +151,21 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
                     // 注：该回调是子线程，非主线程
 //                    Log.i(TAG,"callback thread id is "+Thread.currentThread().getId());
                     String s=response.body().string();
-                    Log.i(TAG,s);
                     try {
                         JSONObject object=new JSONObject(s).getJSONObject("weatherinfo");
-                        String city=object.getString("city");
-                        tv_city.setText(city);
-                        String temp=object.getString("temp");
-                        tv_temperature.setText(temp+"℃");
-                        Log.d(TAG, "onResponse: "+city+":"+temp);
+                        Log.d(TAG, "onResponse: "+object.toString());
+                        final String city=object.getString("city")+"";
+
+                        final String temp=object.getString("temp")+"";
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                tv_city.setText(city);
+                                tv_temperature.setText(temp+"℃");
+                            }
+                        });
+//                        Log.d(TAG, "onResponse: "+city+":"+temp);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -177,7 +184,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
             tv_city.setText(dataObjest.getString("city"));
             JSONObject forecastObjst=dataObjest.getJSONArray("forecast").getJSONObject(0);
             tv_week.setText(forecastObjst.getString("date").substring(3));
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//yyyy年MM月dd日 HH:mm:ss
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");//yyyy年MM月dd日 HH:mm:ss
             //获取当前时间
             Date date = new Date(System.currentTimeMillis());
             tv_years.setText(simpleDateFormat.format(date));

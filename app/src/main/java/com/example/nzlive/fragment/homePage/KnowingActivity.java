@@ -215,7 +215,8 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
 
                 break;
             case R.id.ll_recording:
-
+                Intent intent=new Intent(getApplicationContext(),KnowingRecordingActivity.class);
+                startActivity(intent);
                 break;
         }
     }

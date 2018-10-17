@@ -4,15 +4,15 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -39,7 +39,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".fragment.homePage.TeacherActivity"></activity>
+        <activity android:name=".fragment.homePage.TeacherActivity" />
+        <activity android:name=".fragment.homePage.KnowingRecordingActivity"></activity>
     </application>
 
 </manifest>
