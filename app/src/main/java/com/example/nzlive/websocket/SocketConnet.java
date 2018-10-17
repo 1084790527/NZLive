@@ -81,7 +81,7 @@ public class SocketConnet {
                     case "returnCheckTheBed":
                         Log.d("AAA", "onTextMessage: "+object.toString());;
                         try {
-                            TeacherActivity.returnCheckTheBed(object.getString("data"),object.getString("userid"));
+                            TeacherActivity.returnCheckTheBed(context,object.getString("data"),object.getString("userid"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

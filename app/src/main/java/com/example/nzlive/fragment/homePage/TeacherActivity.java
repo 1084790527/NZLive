@@ -1,5 +1,6 @@
 package com.example.nzlive.fragment.homePage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -58,7 +59,6 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
     private static TeacherListAdapter adapter;
     private ImageView iv_checkTheBed;
     private String userid;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,13 +126,27 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
                     JSONArray jsonArray=new JSONArray(s);
 //                    Log.d(TAG, "onResponse: "+jsonArray.toString());
                     for (int i=0;i<jsonArray.length();i++){
-                        Log.d(TAG, "onResponse: "+jsonArray.getString(i));
+//                        Log.d(TAG, "onResponse: "+jsonArray.getString(i));
                         JSONObject object=jsonArray.getJSONObject(i);
                         TeacherListBean listBean=new TeacherListBean();
                         listBean.setUserid(object.getString("userid")+"");
                         listBean.setUsername(object.getString("username")+"");
                         listBean.setDormroom(object.getString("dormroom")+"");
-                        listBean.setStatus("未到");
+                        String date=SharePreUtil.getData(getApplicationContext(),"teacher",object.getString("userid"),"");
+
+                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd");
+                        Date mDate=new Date(System.currentTimeMillis());
+                        String time=simpleDateFormat.format(mDate);
+
+//                        Log.d(TAG, "onResponse: "+object.getString("userid")+":"+time+":"+date);
+                        if (date.equals("")){
+                            listBean.setStatus("未到");
+                        }else if (time.equals(date.substring(0,8))){
+                            listBean.setStatus(date.substring(8));
+                        }else {
+                            listBean.setStatus("未到");
+                        }
+
                         mList.add(listBean);
                         handler.post(new Runnable() {
                             @Override
@@ -282,14 +296,16 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public static void returnCheckTheBed(String data,String userid){
+    public static void returnCheckTheBed(Context context,String data,String userid){
         for (int i=0;i<mList.size();i++){
             if (userid.equals(mList.get(i).getUserid())){
                 String hh=data.substring(8,10);
                 String mm=data.substring(10,12);
                 String ss=data.substring(12,14);
+                String date=data.substring(0,8);
                 mList.get(i).setStatus(hh+":"+mm+":"+ss);
                 adapter.notifyDataSetChanged();
+                SharePreUtil.saveData(context,"teacher",userid,date+hh+":"+mm+":"+ss);
             }
         }
     }
