@@ -26,6 +26,7 @@ import com.example.nzlive.util.NetTimeUtil;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.util.Util;
 import com.example.nzlive.util.Variable;
+import com.example.nzlive.websocket.SocketConnet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -235,6 +236,16 @@ public class KnowingActivity extends Activity implements View.OnClickListener {
                             case "":
                                 break;
                             case "0":
+                                JSONObject object=new JSONObject();
+                                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+                                Date date=new Date(System.currentTimeMillis());
+                                try {
+                                    object.put("type","returnCheckTheBed");
+                                    object.put("data",simpleDateFormat.format(date)+"");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                SocketConnet.sendTextMessage(object.toString());
                                 finish();
                                 break;
                             case "1":

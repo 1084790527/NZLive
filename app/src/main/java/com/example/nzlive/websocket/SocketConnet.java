@@ -1,8 +1,10 @@
 package com.example.nzlive.websocket;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.nzlive.MainActivity;
+import com.example.nzlive.fragment.homePage.TeacherActivity;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.NotificationManagerUtil;
 import com.example.nzlive.util.SharePreUtil;
@@ -75,6 +77,14 @@ public class SocketConnet {
                         break;
                     case "checkTheBed":
                         NotificationManagerUtil.NMUtil(context,"点名哪！！！","点名开始，请尽快完成任务！");
+                        break;
+                    case "returnCheckTheBed":
+                        Log.d("AAA", "onTextMessage: "+object.toString());;
+                        try {
+                            TeacherActivity.returnCheckTheBed(object.getString("data"),object.getString("userid"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
             }

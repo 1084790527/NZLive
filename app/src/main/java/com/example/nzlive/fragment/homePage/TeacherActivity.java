@@ -1,15 +1,22 @@
 package com.example.nzlive.fragment.homePage;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.nzlive.R;
 import com.example.nzlive.bean.TeacherListBean;
@@ -24,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -37,12 +45,15 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class TeacherActivity extends AppCompatActivity implements View.OnClickListener {
+public class TeacherActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "AAA";
     private LinearLayout ll_return,ll_startPointName;
     private ListView lv_teacher_list;
     private Handler handler;
+    private static List<TeacherListBean> mList;
+    private static TeacherListAdapter adapter;
+    private ImageView iv_checkTheBed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +69,14 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getStdentData() {
-        final List<TeacherListBean> mList=new ArrayList<>();
+
         TeacherListBean bean=new TeacherListBean();
         bean.setUserid("学号");
         bean.setUsername("姓名");
         bean.setDormroom("宿舍");
         bean.setStatus("到时");
         mList.add(bean);
-        final TeacherListAdapter adapter=new TeacherListAdapter(mList,getApplicationContext());
+        adapter=new TeacherListAdapter(mList,getApplicationContext());
         lv_teacher_list.setAdapter(adapter);
 
         OkHttpClient okHttpClient  = new OkHttpClient.Builder()
@@ -142,8 +153,14 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
         ll_startPointName.setOnClickListener(this);
 
         lv_teacher_list=findViewById(R.id.lv_teacher_list);
+        lv_teacher_list.setOnItemClickListener(this);
 
         handler=new Handler(Looper.getMainLooper());
+
+        mList=new ArrayList<>();
+
+        iv_checkTheBed=findViewById(R.id.iv_checkTheBed);
+        iv_checkTheBed.setOnClickListener(this);
     }
 
     @Override
@@ -165,6 +182,88 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
                     LogUtil.Logd(getApplicationContext(),"连接服务器失败请重启app！");
                 }
                 break;
+            case R.id.iv_checkTheBed:
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,0);
+                iv_checkTheBed.setLayoutParams(params);
+                break;
         }
+    }
+
+    public static void returnCheckTheBed(String data,String userid){
+        for (int i=0;i<mList.size();i++){
+            if (userid.equals(mList.get(i).getUserid())){
+                String hh=data.substring(8,10);
+                String mm=data.substring(10,12);
+                String ss=data.substring(12,14);
+                mList.get(i).setStatus(hh+":"+mm+":"+ss);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        LogUtil.Logd(getApplicationContext(),"position:"+position);
+        TextView tv_status=view.findViewById(R.id.tv_status);
+        LogUtil.Logd(getApplicationContext(),tv_status.getText()+"");
+        String status=tv_status.getText()+"";
+        if ("未到".equals(status)){
+            return;
+        }
+        TextView tv_userid=view.findViewById(R.id.tv_userid);
+        String userid=tv_userid.getText()+"";
+
+//        iv_checkTheBed.setBackground();
+
+        OkHttpClient okHttpClient  = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10,TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("userid",userid);
+            jsonObject.put("data","20181016");
+            jsonObject.put("status",status);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String json = jsonObject.toString();
+
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
+                , json);
+
+        final Request request = new Request.Builder()
+                .url(Variable.ServiceIP+"getImageStream")//请求的url
+                .post(requestBody)
+                .build();
+
+        //创建/Call
+        Call call = okHttpClient.newCall(request);
+        //加入队列 异步操作
+        call.enqueue(new Callback() {
+            //请求错误回调方法
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("连接失败");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+//                Log.d(TAG, ""+response.body().string());
+                InputStream inputStream = response.body().byteStream();//得到图片的流
+                final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        iv_checkTheBed.setScaleType(ImageView.ScaleType.CENTER);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+                        iv_checkTheBed.setLayoutParams(params);
+                        iv_checkTheBed.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        });
     }
 }
