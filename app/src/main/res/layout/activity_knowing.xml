@@ -130,6 +130,7 @@
             android:layout_width="20dp"
             android:layout_height="wrap_content" />
         <LinearLayout
+            android:id="@+id/ll_recording"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:background="#868686"

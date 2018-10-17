@@ -47,12 +47,14 @@ import java.util.Date;
 import java.util.List;
 
 import de.tavendo.autobahn.WebSocketException;
+import okhttp3.OkHttpClient;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomePageFragment extends Fragment implements View.OnClickListener {
 
+    private String TAG="AAA";
     private View view;
     private ViewPager home_viewPager;
     private OneFragment f1;
@@ -64,7 +66,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
     private boolean isAutoPlay  ;
     private Handler handler;
     private View ll_knowing;
-    private String strUrl = "http://wthrcdn.etouch.cn/weather_mini?city=福安";
+//    private String strUrl = "http://wthrcdn.etouch.cn/weather_mini?city=福安";
     private TextView tv_week,tv_years,tv_temperature,tv_city;
     private ImageView img_weather;
 
@@ -102,27 +104,69 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
         });
 
 //        weather(new GETHttp().getResponse(getContext()));
-//        weather();
+        weather();
         return view;
     }
 
 
     private void weather() {
-        RequestQueue mQueue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, strUrl, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                // TODO Auto-generated method stu
-                Log.d("AAA", "onResponse: "+response.toString());
+//        RequestQueue mQueue = Volley.newRequestQueue(getActivity());
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, strUrl, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                // TODO Auto-generated method stu
+//                Log.d("AAA", "onResponse: "+response.toString());
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Log.d("AAA", "onErrorResponse: "+volleyError.toString());
+//            }
+//        });
+//        mQueue.add(jsonObjectRequest);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//yyyy年MM月dd日 HH:mm:ss
+        //获取当前时间
+        Date date = new Date(System.currentTimeMillis());
+        tv_years.setText(simpleDateFormat.format(date)+"");
+        img_weather.setImageDrawable(getResources().getDrawable(R.drawable.overcastsky));
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d("AAA", "onErrorResponse: "+volleyError.toString());
-            }
-        });
-        mQueue.add(jsonObjectRequest);
+        simpleDateFormat=new SimpleDateFormat("E");
+        String week="星期"+(simpleDateFormat.format(date)).substring(1,2);
+        LogUtil.Logd(getActivity(),week);
+        tv_week.setText(week);
+
+        try {
+//            Log.i("wxy","main thread id is "+Thread.currentThread().getId());
+            String url = "http://www.weather.com.cn/data/sk/101230306.html";
+            OkHttpClient client = new OkHttpClient();
+            okhttp3.Request request = new okhttp3.Request.Builder().url(url).build();
+            client.newCall(request).enqueue(new okhttp3.Callback() {
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+
+                }
+                @Override
+                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                    // 注：该回调是子线程，非主线程
+//                    Log.i(TAG,"callback thread id is "+Thread.currentThread().getId());
+                    String s=response.body().string();
+                    Log.i(TAG,s);
+                    try {
+                        JSONObject object=new JSONObject(s).getJSONObject("weatherinfo");
+                        String city=object.getString("city");
+                        tv_city.setText(city);
+                        String temp=object.getString("temp");
+                        tv_temperature.setText(temp+"℃");
+                        Log.d(TAG, "onResponse: "+city+":"+temp);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void weather(JSONObject jsonObject) {
@@ -199,7 +243,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
         fragmentContainter.add(f5);
         ll_knowing=view.findViewById(R.id.ll_knowing);
         ll_knowing.setOnClickListener(this);
-        new GETHttp().setResponse(strUrl,getContext());
+//        new GETHttp().setResponse(strUrl,getContext());
         tv_week=view.findViewById(R.id.tv_week);
         tv_years=view.findViewById(R.id.tv_years);
         tv_temperature=view.findViewById(R.id.tv_temperature);
