@@ -3,8 +3,7 @@ package com.example.nzlive.websocket;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.nzlive.MainActivity;
-import com.example.nzlive.fragment.homePage.TeacherActivity;
+import com.example.nzlive.fragment.homePage.checkTheBed.TeacherActivity;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.NotificationManagerUtil;
 import com.example.nzlive.util.SharePreUtil;

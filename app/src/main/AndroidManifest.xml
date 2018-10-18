@@ -27,7 +27,7 @@
         <activity android:name=".login.login" />
         <activity android:name=".login.register" />
         <activity android:name=".login.entry_pwd" />
-        <activity android:name=".fragment.homePage.KnowingActivity" />
+        <activity android:name=".fragment.homePage.checkTheBed.KnowingActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -39,9 +39,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".fragment.homePage.TeacherActivity" />
-        <activity android:name=".fragment.homePage.KnowingRecordingActivity" />
-        <activity android:name=".fragment.homePage.TeacherRecordingActivity"></activity>
+        <activity android:name=".fragment.homePage.checkTheBed.TeacherActivity" />
+        <activity android:name=".fragment.homePage.checkTheBed.KnowingRecordingActivity" />
+        <activity android:name=".fragment.homePage.checkTheBed.TeacherRecordingActivity" />
+        <activity android:name=".fragment.homePage.easyRepair.RepairActivity" />
+        <activity android:name=".fragment.homePage.easyRepair.RepairScheduleActivity"></activity>
     </application>
 
 </manifest>

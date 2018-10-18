@@ -5,11 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
 
-import com.example.nzlive.MainActivity;
 import com.example.nzlive.R;
-import com.example.nzlive.fragment.homePage.KnowingActivity;
+import com.example.nzlive.fragment.homePage.checkTheBed.KnowingActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 

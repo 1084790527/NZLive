@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragment.homePage.TeacherActivity"
+    tools:context=".fragment.homePage.checkTheBed.TeacherActivity"
     android:background="#ececec">
 
     <ImageView

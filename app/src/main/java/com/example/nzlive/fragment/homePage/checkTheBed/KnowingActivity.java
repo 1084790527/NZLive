@@ -1,4 +1,4 @@
-package com.example.nzlive.fragment.homePage;
+package com.example.nzlive.fragment.homePage.checkTheBed;
 
 import android.Manifest;
 import android.app.Activity;
@@ -29,7 +29,6 @@ import com.example.nzlive.util.ImageUtil;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.NetTimeUtil;
 import com.example.nzlive.util.SharePreUtil;
-import com.example.nzlive.util.Util;
 import com.example.nzlive.util.Variable;
 import com.example.nzlive.websocket.SocketConnet;
 
@@ -37,10 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,7 +46,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;

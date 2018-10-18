@@ -1,7 +1,6 @@
 package com.example.nzlive.fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,38 +14,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.nzlive.R;
-import com.example.nzlive.fragment.homePage.KnowingActivity;
-import com.example.nzlive.fragment.homePage.TeacherActivity;
-import com.example.nzlive.util.GETHttp;
-import com.example.nzlive.util.LogUtil;
+import com.example.nzlive.fragment.homePage.checkTheBed.KnowingActivity;
+import com.example.nzlive.fragment.homePage.easyRepair.RepairActivity;
+import com.example.nzlive.fragment.homePage.checkTheBed.TeacherActivity;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.viewPager.FiveFragment;
 import com.example.nzlive.viewPager.FourFragment;
 import com.example.nzlive.viewPager.OneFragment;
 import com.example.nzlive.viewPager.ThreeFragment;
 import com.example.nzlive.viewPager.TwoFragment;
-import com.example.nzlive.websocket.SocketConnet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.tavendo.autobahn.WebSocketException;
 import okhttp3.OkHttpClient;
 
 /**
@@ -65,7 +52,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
     private List fragmentContainter;
     private boolean isAutoPlay  ;
     private Handler handler;
-    private View ll_knowing;
+    private View ll_knowing,ll_repair;
 //    private String strUrl = "http://wthrcdn.etouch.cn/weather_mini?city=福安";
     private TextView tv_week,tv_years,tv_temperature,tv_city;
     private ImageView img_weather;
@@ -220,6 +207,9 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+            case R.id.ll_repair:
+                startActivity(new Intent(getActivity(), RepairActivity.class));
+                break;
         }
     }
 
@@ -256,6 +246,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
         tv_temperature=view.findViewById(R.id.tv_temperature);
         tv_city=view.findViewById(R.id.tv_city);
         img_weather=view.findViewById(R.id.img_weather);
+        ll_repair=view.findViewById(R.id.ll_repair);
+        ll_repair.setOnClickListener(this);
     }
 
     @Override

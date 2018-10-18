@@ -1,4 +1,4 @@
-package com.example.nzlive.fragment.homePage;
+package com.example.nzlive.fragment.homePage.checkTheBed;
 
 import android.os.Handler;
 import android.os.Looper;
