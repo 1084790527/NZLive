@@ -1,6 +1,8 @@
 package com.example.nzlive.fragment;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.nzlive.MainActivity;
 import com.example.nzlive.R;
 import com.example.nzlive.Splash;
 import com.example.nzlive.login.login;
@@ -110,8 +113,11 @@ public class PersonageFragment extends Fragment implements View.OnClickListener 
                     SocketConnet.closeWebSocketConnection();
                 }
                 SharePreUtil.saveBoolean(getActivity(), ConstantValue.ISFIRST, true);
-                startActivity(new Intent(getActivity(), login.class));
-                getActivity().finish();
+
+//                System.exit(0);
+//                startActivity(new Intent(getActivity(), login.class));
+//                getActivity().finish();
+                System.exit(0);
                 break;
         }
     }

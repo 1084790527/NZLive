@@ -13,6 +13,9 @@ import com.example.nzlive.util.Variable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 import de.tavendo.autobahn.WebSocketHandler;
@@ -23,8 +26,11 @@ import de.tavendo.autobahn.WebSocketHandler;
 
 public class SocketConnet {
 
+    private static final String TAG = "AAA";
     private static Context context;
     private static WebSocketConnection webSocketConnection;
+    private static int x;
+
     public static void connet(final Context cox) throws WebSocketException {
         context=cox;
         webSocketConnection=new WebSocketConnection();
@@ -32,6 +38,7 @@ public class SocketConnet {
 
             @Override
             public void onOpen() {
+                x=0;
 //                webSocketConnection.sendTextMessage("连接成功");
                 String s= SharePreUtil.getData(context,"user","data","");
                 try {
@@ -42,9 +49,32 @@ public class SocketConnet {
                     jsonObject.put("type","userid");
                     jsonObject.put("userid",userid);
                     webSocketConnection.sendTextMessage(jsonObject.toString());
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                //心跳检测
+                Executors.newScheduledThreadPool(3).scheduleWithFixedDelay(new Runnable() {
+                    @Override
+                    public void run() {
+//                        Log.d(TAG, "run: "+"心跳检测");
+
+                        int y=(int)(Math.random()*10);
+                        while (y==x){
+                            y=(int)(Math.random()*10);
+                        }
+                        x=y;
+                        JSONObject object=new JSONObject();
+                        try {
+                            object.put("type","heartbeatDetection");
+                            object.put("data",x);
+                            webSocketConnection.sendTextMessage(object.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },0,5, TimeUnit.SECONDS);
             }
 
             @Override
@@ -112,9 +142,13 @@ public class SocketConnet {
     public static boolean booleanconnet(){
         if (webSocketConnection==null){
             return false;
-        }else {
-            return true;
         }
+//        if (!webSocketConnection.isConnected()){
+//            return false;
+//        }else {
+//            return true;
+//        }
+        return webSocketConnection.isConnected();
 
     }
 }

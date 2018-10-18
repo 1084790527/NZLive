@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,12 +18,18 @@ import com.example.nzlive.fragment.PersonageFragment;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.websocket.SocketConnet;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketException;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "AAA";
     private RadioButton rb_homepage,rb_information,rb_friend,rb_personage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,17 @@ public class MainActivity extends AppCompatActivity {
         rbListener();
 
         webSocketConnet();
+
+        Executors.newScheduledThreadPool(3).scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+//                Log.d(TAG, "run: ");
+                if (!SocketConnet.booleanconnet()){
+                    webSocketConnet();
+                }
+            }
+        },5,5, TimeUnit.SECONDS);
+
     }
 
     private void webSocketConnet() {

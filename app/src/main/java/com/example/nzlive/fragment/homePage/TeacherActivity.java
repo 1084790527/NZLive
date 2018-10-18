@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -312,6 +313,9 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(position==0){
+            return;
+        }
         LogUtil.Logd(getApplicationContext(),"position:"+position);
         TextView tv_status=view.findViewById(R.id.tv_status);
         LogUtil.Logd(getApplicationContext(),tv_status.getText()+"");
@@ -324,6 +328,9 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
 
 //        iv_checkTheBed.setBackground();
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date(System.currentTimeMillis());
+
         OkHttpClient okHttpClient  = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10,TimeUnit.SECONDS)
@@ -333,7 +340,7 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
         JSONObject jsonObject=new JSONObject();
         try {
             jsonObject.put("userid",userid);
-            jsonObject.put("data","20181016");
+            jsonObject.put("data",simpleDateFormat.format(date));
             jsonObject.put("status",status);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -341,8 +348,7 @@ public class TeacherActivity extends AppCompatActivity implements View.OnClickLi
         String json = jsonObject.toString();
 
         //MediaType  设置Content-Type 标头中包含的媒体类型值
-        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8")
-                , json);
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 
         final Request request = new Request.Builder()
                 .url(Variable.ServiceIP+"getImageStream")//请求的url
