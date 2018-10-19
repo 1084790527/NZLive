@@ -19,6 +19,7 @@ import com.example.nzlive.fragment.homePage.checkTheBed.KnowingActivity;
 import com.example.nzlive.fragment.homePage.easyRepair.RepairActivity;
 import com.example.nzlive.fragment.homePage.checkTheBed.TeacherActivity;
 import com.example.nzlive.fragment.homePage.easyRepair.TeacherReviewActivity;
+import com.example.nzlive.fragment.homePage.resultInquiry.ResultInquiryActivity;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.viewPager.FiveFragment;
 import com.example.nzlive.viewPager.FourFragment;
@@ -53,7 +54,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
     private List fragmentContainter;
     private boolean isAutoPlay  ;
     private Handler handler;
-    private View ll_knowing,ll_repair;
+    private View ll_knowing,ll_repair,ll_resultInquiry;
 //    private String strUrl = "http://wthrcdn.etouch.cn/weather_mini?city=福安";
     private TextView tv_week,tv_years,tv_temperature,tv_city;
     private ImageView img_weather;
@@ -217,6 +218,9 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+            case R.id.ll_resultInquiry:
+                startActivity(new Intent(getActivity(), ResultInquiryActivity.class));
+                break;
         }
     }
 
@@ -255,6 +259,8 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
         img_weather=view.findViewById(R.id.img_weather);
         ll_repair=view.findViewById(R.id.ll_repair);
         ll_repair.setOnClickListener(this);
+        ll_resultInquiry=view.findViewById(R.id.ll_resultInquiry);
+        ll_resultInquiry.setOnClickListener(this);
 
         String s=SharePreUtil.getData(getActivity(),"user","data","");
         try {
