@@ -105,7 +105,7 @@ public class RepairScheduleActivity extends AppCompatActivity implements Adapter
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String s=response.body().string();
-                Log.d(TAG, ""+s);
+//                Log.d(TAG, ""+s);
                 try {
                     JSONArray jsonArray=new JSONArray(s);
                     setListdata(jsonArray);
@@ -135,7 +135,7 @@ public class RepairScheduleActivity extends AppCompatActivity implements Adapter
         handler.post(new Runnable() {
             @Override
             public void run() {
-                LogUtil.Logd(getApplicationContext(),jsonArray.toString()+"");
+//                LogUtil.Logd(getApplicationContext(),jsonArray.toString()+"");
                 adapter.notifyDataSetChanged();
             }
         });
