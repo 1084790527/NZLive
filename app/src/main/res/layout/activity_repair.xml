@@ -38,6 +38,7 @@
                     android:layout_height="wrap_content"
                     android:text="学号：" />
                 <EditText
+                    android:enabled="false"
                     android:singleLine="true"
                     android:id="@+id/et_userId"
                     android:layout_width="match_parent"
@@ -52,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:text="姓名：" />
                 <EditText
+                    android:enabled="false"
                     android:singleLine="true"
                     android:id="@+id/et_userName"
                     android:layout_width="match_parent"
@@ -68,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:text="宿舍：" />
                 <EditText
+                    android:enabled="false"
                     android:singleLine="true"
                     android:id="@+id/et_dormRoom"
                     android:layout_width="match_parent"

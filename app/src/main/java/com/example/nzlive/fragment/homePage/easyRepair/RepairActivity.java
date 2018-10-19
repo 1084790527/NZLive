@@ -1,5 +1,6 @@
 package com.example.nzlive.fragment.homePage.easyRepair;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -81,6 +82,7 @@ public class RepairActivity extends AppCompatActivity implements View.OnClickLis
                 submit();
                 break;
             case R.id.btn_schedule:
+                startActivity(new Intent(getApplicationContext(),RepairScheduleActivity.class));
                 break;
         }
     }
