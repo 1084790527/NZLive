@@ -18,6 +18,7 @@ import com.example.nzlive.R;
 import com.example.nzlive.fragment.homePage.checkTheBed.KnowingActivity;
 import com.example.nzlive.fragment.homePage.easyRepair.RepairActivity;
 import com.example.nzlive.fragment.homePage.checkTheBed.TeacherActivity;
+import com.example.nzlive.fragment.homePage.easyRepair.TeacherReviewActivity;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.viewPager.FiveFragment;
 import com.example.nzlive.viewPager.FourFragment;
@@ -56,6 +57,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 //    private String strUrl = "http://wthrcdn.etouch.cn/weather_mini?city=福安";
     private TextView tv_week,tv_years,tv_temperature,tv_city;
     private ImageView img_weather;
+    private String userid;
 
     public HomePageFragment() {
         // Required empty public constructor
@@ -208,7 +210,12 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.ll_repair:
-                startActivity(new Intent(getActivity(), RepairActivity.class));
+                if (userid.length()==10){
+                    startActivity(new Intent(getActivity(), RepairActivity.class));
+                }else {
+                    startActivity(new Intent(getActivity(), TeacherReviewActivity.class));
+                }
+
                 break;
         }
     }
@@ -248,6 +255,15 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
         img_weather=view.findViewById(R.id.img_weather);
         ll_repair=view.findViewById(R.id.ll_repair);
         ll_repair.setOnClickListener(this);
+
+        String s=SharePreUtil.getData(getActivity(),"user","data","");
+        try {
+            JSONObject object=new JSONObject(s);
+            userid=object.getString("userid");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            userid=null;
+        }
     }
 
     @Override

@@ -43,7 +43,8 @@
         <activity android:name=".fragment.homePage.checkTheBed.KnowingRecordingActivity" />
         <activity android:name=".fragment.homePage.checkTheBed.TeacherRecordingActivity" />
         <activity android:name=".fragment.homePage.easyRepair.RepairActivity" />
-        <activity android:name=".fragment.homePage.easyRepair.RepairScheduleActivity"></activity>
+        <activity android:name=".fragment.homePage.easyRepair.RepairScheduleActivity" />
+        <activity android:name=".fragment.homePage.easyRepair.TeacherReviewActivity"></activity>
     </application>
 
 </manifest>
