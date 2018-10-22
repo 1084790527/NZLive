@@ -45,7 +45,9 @@
         <activity android:name=".fragment.homePage.easyRepair.RepairActivity" />
         <activity android:name=".fragment.homePage.easyRepair.RepairScheduleActivity" />
         <activity android:name=".fragment.homePage.easyRepair.TeacherReviewActivity" />
-        <activity android:name=".fragment.homePage.resultInquiry.ResultInquiryActivity"></activity>
+        <activity android:name=".fragment.homePage.resultInquiry.ResultInquiryActivity" />
+        <activity android:name=".fragment.homePage.exchange.ExchangeActivity" />
+        <activity android:name=".fragment.homePage.mall.MallActivity"></activity>
     </application>
 
 </manifest>

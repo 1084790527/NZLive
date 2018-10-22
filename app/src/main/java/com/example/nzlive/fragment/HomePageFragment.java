@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,7 +20,10 @@ import com.example.nzlive.fragment.homePage.checkTheBed.KnowingActivity;
 import com.example.nzlive.fragment.homePage.easyRepair.RepairActivity;
 import com.example.nzlive.fragment.homePage.checkTheBed.TeacherActivity;
 import com.example.nzlive.fragment.homePage.easyRepair.TeacherReviewActivity;
+import com.example.nzlive.fragment.homePage.exchange.ExchangeActivity;
+import com.example.nzlive.fragment.homePage.mall.MallActivity;
 import com.example.nzlive.fragment.homePage.resultInquiry.ResultInquiryActivity;
+import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.util.SharePreUtil;
 import com.example.nzlive.viewPager.FiveFragment;
 import com.example.nzlive.viewPager.FourFragment;
@@ -54,7 +58,7 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
     private List fragmentContainter;
     private boolean isAutoPlay  ;
     private Handler handler;
-    private View ll_knowing,ll_repair,ll_resultInquiry;
+    private View ll_knowing,ll_repair,ll_resultInquiry,ll_exchange,ll_mall;
 //    private String strUrl = "http://wthrcdn.etouch.cn/weather_mini?city=福安";
     private TextView tv_week,tv_years,tv_temperature,tv_city;
     private ImageView img_weather;
@@ -221,6 +225,13 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
             case R.id.ll_resultInquiry:
                 startActivity(new Intent(getActivity(), ResultInquiryActivity.class));
                 break;
+            case R.id.ll_exchange:
+                startActivity(new Intent(getActivity(), ExchangeActivity.class));
+                break;
+            case R.id.ll_mall:
+                startActivity(new Intent(getActivity(), MallActivity.class));
+                break;
+
         }
     }
 
@@ -270,6 +281,11 @@ public class HomePageFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
             userid=null;
         }
+
+        ll_exchange=view.findViewById(R.id.ll_exchange);
+        ll_exchange.setOnClickListener(this);
+        ll_mall=view.findViewById(R.id.ll_mall);
+        ll_mall.setOnClickListener(this);
     }
 
     @Override
