@@ -1,5 +1,6 @@
 package com.example.nzlive.fragment.homePage.exchange;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -160,6 +161,7 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeRecyc
 //                } else {
 //                    holder.itemView.setBackgroundColor(0xccff22ff);
 //                }
+                holder.itemView.setBackgroundColor(0xFFFFFFFF);
             }
         };
 
@@ -250,7 +252,8 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeRecyc
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab_test:
-                LogUtil.Logd(getApplicationContext(),"dj" );
+//                LogUtil.Logd(getApplicationContext(),"dj" );
+                startActivity(new Intent(getApplicationContext(),releaseActivity.class));
                 break;
         }
     }
