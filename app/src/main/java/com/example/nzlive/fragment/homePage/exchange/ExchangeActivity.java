@@ -1,6 +1,7 @@
 package com.example.nzlive.fragment.homePage.exchange;
 
 import android.graphics.Rect;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ExchangeActivity extends AppCompatActivity implements ExchangeRecyclerAdapter.MyItemClickListener {
+public class ExchangeActivity extends AppCompatActivity implements ExchangeRecyclerAdapter.MyItemClickListener, View.OnClickListener {
 
     private ExchangeRecyclerAdapter Adapter_linearLayout,Adapter_GridLayout,Adapter_FixLayout,Adapter_ScrollFixLayout
             ,Adapter_FloatLayout,Adapter_ColumnLayout,Adapter_SingleLayout,Adapter_onePlusNLayout,
@@ -38,6 +39,7 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeRecyc
     private ArrayList<HashMap<String, Object>> listItem;
     private RecyclerView rv_exchange;
     private SmartRefreshLayout srl_exchange;
+    private FloatingActionButton fab_test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,6 +208,8 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeRecyc
     }
 
     private void init() {
+        fab_test=findViewById(R.id.fab_test);
+        fab_test.setOnClickListener(this);
         rv_exchange=findViewById(R.id.rv_exchange);
         srl_exchange=findViewById(R.id.srl_exchange);
         srl_exchange.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -240,5 +244,14 @@ public class ExchangeActivity extends AppCompatActivity implements ExchangeRecyc
         LogUtil.Logd(getApplicationContext(), ""+listItem.get(position).get("ItemTitle"));
 //        Toast.makeText(this, (String) listItem.get(position).get("ItemTitle"), Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab_test:
+                LogUtil.Logd(getApplicationContext(),"dj" );
+                break;
+        }
     }
 }
