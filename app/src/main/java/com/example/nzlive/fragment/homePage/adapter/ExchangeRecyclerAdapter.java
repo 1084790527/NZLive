@@ -94,7 +94,6 @@ public class ExchangeRecyclerAdapter extends DelegateAdapter.Adapter<ExchangeRec
                                             if (myItemClickListener != null)
                                                 myItemClickListener.onItemClick(v, getPosition());
                                         }
-
                                     }
                     //监听到点击就回调MainActivity的onItemClick函数
             );
