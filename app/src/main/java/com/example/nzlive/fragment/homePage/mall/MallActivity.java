@@ -13,5 +13,6 @@ public class MallActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_mall);
+        
     }
 }
