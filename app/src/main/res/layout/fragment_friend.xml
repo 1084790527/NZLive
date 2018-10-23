@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".fragment.FriendFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textview"
+    <ExpandableListView
+        android:id="@+id/lv_friend"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
+    </ExpandableListView>
 </LinearLayout>
