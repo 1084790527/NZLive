@@ -11,6 +11,9 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.nzlive.R;
+import com.example.nzlive.bean.FriendChildrenListBean;
+import com.example.nzlive.bean.FriendGroupListBean;
+import com.example.nzlive.fragment.adapter.FriendListAdapter;
 import com.example.nzlive.util.LogUtil;
 import com.example.nzlive.websocket.SocketConnet;
 
@@ -18,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.tavendo.autobahn.WebSocketException;
@@ -36,7 +41,8 @@ import okhttp3.Response;
 public class FriendFragment extends Fragment {
 
     private View view;
-    private ExpandableListView lv_friend;;
+    private ExpandableListView lv_friend;
+    private FriendListAdapter adapter;
 
     private static final String TAG = "AAA";
 //    private SocketConnet connet;
@@ -59,6 +65,22 @@ public class FriendFragment extends Fragment {
 
     private void init() {
         lv_friend=view.findViewById(R.id.lv_friend);
+        List<FriendChildrenListBean> childrenListBeans=new ArrayList<>();
+        for (int i=0;i<10;i++){
+            FriendChildrenListBean childrenListBean=new FriendChildrenListBean();
+            childrenListBean.setText("123123");
+            childrenListBeans.add(childrenListBean);
+        }
+        List<FriendGroupListBean> groupListBeans=new ArrayList<>();
+        for (int i=0;i<10;i++){
+            FriendGroupListBean groupListBean=new FriendGroupListBean();
+            groupListBean.setTitle("456789");
+            groupListBeans.add(groupListBean);
+        }
+
+        adapter=new FriendListAdapter(getActivity(),groupListBeans,childrenListBeans);
+
+        lv_friend.setAdapter(adapter);
     }
 
 }
